@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: backend
+  name: backend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: backend
+    spec:
+      containers:
+      - env:
+        - name: PGSTRING
+          value: postgres://postgres:example@db:5432/postgres
+        image: imagestored/backend
+        name: backend
+        resources: {}
+        volumeMounts:
+        - mountPath: /code/media
+          name: backend-claim0
+      restartPolicy: Always
+      volumes:
+      - name: backend-claim0
+        persistentVolumeClaim:
+          claimName: backend-claim0
+status: {}

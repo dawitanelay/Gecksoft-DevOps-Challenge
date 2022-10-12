@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: face
+  name: face
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: face
+    spec:
+      containers:
+      - env:
+        - name: BASE_ADDRESS
+          value: backend:4000
+        - name: PORT
+          value: "5000"
+        image: imagestored/face
+        name: face
+        resources: {}
+        volumeMounts:
+        - mountPath: /code/features
+          name: face-claim0
+      restartPolicy: Always
+      volumes:
+      - name: face-claim0
+        persistentVolumeClaim:
+          claimName: face-claim0
+status: {}

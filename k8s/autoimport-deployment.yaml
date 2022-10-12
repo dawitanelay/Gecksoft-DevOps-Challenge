@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: autoimport
+  name: autoimport
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: autoimport
+    spec:
+      containers:
+      - env:
+        - name: BACKEND_URL
+          value: backend:4000
+        - name: POLLING_RATE
+          value: "10000"
+        - name: SLEEP_TIME
+          value: "100"
+        image: imagestored/autoimport
+        name: autoimport
+        resources: {}
+        volumeMounts:
+        - mountPath: /code/import
+          name: autoimport-claim0
+      restartPolicy: Always
+      volumes:
+      - name: autoimport-claim0
+        persistentVolumeClaim:
+          claimName: autoimport-claim0
+status: {}

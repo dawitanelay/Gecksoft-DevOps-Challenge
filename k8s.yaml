@@ -1,0 +1,535 @@
+ #Generated using the tool https://8gwifi.org/kube1.jsp
+#Total Number of Services Found 9
+
+#Generating kubernetes YAML file for the Service nginx.yml
+#This is Service Configuration Kube definition
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: service.name.9
+  namespace: default
+spec:
+  ports:
+  - name: nameme_01
+    port: 3000
+    protocol: tcp
+    targetPort: 3000
+  selector:
+    app: demo.53
+  type: NodePort
+
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.53
+  name: deployment.name.48
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.53
+  template:
+    metadata:
+      labels:
+        app: demo.53
+      namespace: default
+    spec:
+      containers:
+      - image: imagestored/nginx${TAG:-}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: portname.0
+          protocol: tcp
+      terminationGracePeriodSeconds: 0
+
+#Generating kubernetes YAML file for the Service frontend.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.31
+  name: deployment.name.19
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.31
+  template:
+    metadata:
+      labels:
+        app: demo.31
+      namespace: default
+    spec:
+      containers:
+      - image: imagestored/frontend${TAG:-}
+        imagePullPolicy: IfNotPresent
+      terminationGracePeriodSeconds: 0
+
+#Generating kubernetes YAML file for the Service backend.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.12
+  name: deployment.name.46
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.12
+  template:
+    metadata:
+      labels:
+        app: demo.12
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: PGSTRING
+          value: postgres://postgres:example@db:5432/postgres
+        image: imagestored/backend${TAG:-}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /code/media
+          name: pvo.0
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: pvo.0
+        persistentVolumeClaim:
+          claimName: claimname.0
+
+#This is PersistentVolume Kube Object with Name
+#pvo.0.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: pvo.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: ./media/
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+
+#This is PersistentVolumeClaim Kube Object with Name
+#claimname.0.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: claimname.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvo.0
+
+#Generating kubernetes YAML file for the Service db.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.1
+  name: deployment.name.73
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.1
+  template:
+    metadata:
+      labels:
+        app: demo.1
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_PASSWORD
+          value: example
+        image: postgres:11
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: pvo.0
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: pvo.0
+        persistentVolumeClaim:
+          claimName: claimname.0
+
+#This is PersistentVolume Kube Object with Name
+#pvo.0.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: pvo.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: ./data/
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+
+#This is PersistentVolumeClaim Kube Object with Name
+#claimname.0.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: claimname.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvo.0
+
+#Generating kubernetes YAML file for the Service detectron2.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.47
+  name: deployment.name.17
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.47
+  template:
+    metadata:
+      labels:
+        app: demo.47
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: BASE_ADDRESS
+          value: backend:4000
+        - name: FETCH_INTERVAL
+          value: '10'
+        image: imagestored/detectron2${TAG:-}
+        imagePullPolicy: IfNotPresent
+      terminationGracePeriodSeconds: 0
+
+#Generating kubernetes YAML file for the Service yolo.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.23
+  name: deployment.name.35
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.23
+  template:
+    metadata:
+      labels:
+        app: demo.23
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: BASE_ADDRESS
+          value: backend:4000
+        - name: FETCH_INTERVAL
+          value: '10'
+        image: imagestored/yolo${TAG:-}
+        imagePullPolicy: IfNotPresent
+      terminationGracePeriodSeconds: 0
+
+#Generating kubernetes YAML file for the Service search.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.47
+  name: deployment.name.17
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.47
+  template:
+    metadata:
+      labels:
+        app: demo.47
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: BASE_ADDRESS
+          value: backend:4000
+        - name: PORT
+          value: '5000'
+        image: imagestored/search${TAG:-}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /code/features
+          name: pvo.0
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: pvo.0
+        persistentVolumeClaim:
+          claimName: claimname.0
+
+#This is PersistentVolume Kube Object with Name
+#pvo.0.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: pvo.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: ./imageFeatures/
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+
+#This is PersistentVolumeClaim Kube Object with Name
+#claimname.0.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: claimname.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvo.0
+
+#Generating kubernetes YAML file for the Service face.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.58
+  name: deployment.name.8
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.58
+  template:
+    metadata:
+      labels:
+        app: demo.58
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: BASE_ADDRESS
+          value: backend:4000
+        - name: PORT
+          value: '5000'
+        image: imagestored/face${TAG:-}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /code/features
+          name: pvo.0
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: pvo.0
+        persistentVolumeClaim:
+          claimName: claimname.0
+
+#This is PersistentVolume Kube Object with Name
+#pvo.0.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: pvo.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: ./faceFeatures/
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+
+#This is PersistentVolumeClaim Kube Object with Name
+#claimname.0.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: claimname.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvo.0
+
+#Generating kubernetes YAML file for the Service autoimport.yml
+
+#This is Deployment Configuration Kube definition
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: demo.46
+  name: deployment.name.48
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: demo.46
+  template:
+    metadata:
+      labels:
+        app: demo.46
+      namespace: default
+    spec:
+      containers:
+      - env:
+        - name: BACKEND_URL
+          value: backend:4000
+        - name: SLEEP_TIME
+          value: '100'
+        - name: POLLING_RATE
+          value: '10000'
+        image: imagestored/autoimport${TAG:-}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /code/import
+          name: pvo.0
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: pvo.0
+        persistentVolumeClaim:
+          claimName: claimname.0
+
+#This is PersistentVolume Kube Object with Name
+#pvo.0.yml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: pvo.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: ./import/
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+
+#This is PersistentVolumeClaim Kube Object with Name
+#claimname.0.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    generated.by: 8gwifi.org
+  name: claimname.0
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: pvo.0

@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: search
+  name: search
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: search
+    spec:
+      containers:
+      - env:
+        - name: BASE_ADDRESS
+          value: backend:4000
+        - name: PORT
+          value: "5000"
+        image: imagestored/search
+        name: search
+        resources: {}
+        volumeMounts:
+        - mountPath: /code/features
+          name: search-claim0
+      restartPolicy: Always
+      volumes:
+      - name: search-claim0
+        persistentVolumeClaim:
+          claimName: search-claim0
+status: {}
