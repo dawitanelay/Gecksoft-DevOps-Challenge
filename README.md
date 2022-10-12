@@ -15,81 +15,36 @@ ImageStore is a self-hosted photo gallery, that makes Google Photos users feel r
 
 [Online demo](https://gregordr.github.io/ImageStore/)
 
-This should give you a feeling of how everything works with images of cats. The demo is not very up to date or fast, but you can use it to see if you like the UI in general.
+## Introduction
+Imagine you are working for a software development company that has the need of
+developing, testing, assuring the quality and shipping to production an application that
+comprises at least a backend service and a frontend web application.
+Developers then need a way of:
 
-To upload your own images and use all features, you will need to self-host.
+- running the application locally (with docker and docker compose)
+- executing unit and feature tests on the code automatically (on a CI environment)
+- deploy the application on the QA environment (a Kubernetes cluster)
+- finally ship it to production on a cloud service (AWS, GCP, Azure…)
 
-![preview](https://imgur.com/0yZQ7c7.jpg)
 
-## Installation instructions:
+## Getting Started
+1. Clone this repository
 
-### Docker prebuilt images
+2. Running the application locally with docker-compose
 
-Requirements:
+3. Bring the application into a kubernetes cluster
 
- - Docker
- - Docker-compose
- - For more advanced features: x86_64 CPU (also known as x64, x86_64, AMD64 and Intel 64)
+4. Run a CI service in the cluster
 
-Download the docker-compose.yml: ```wget https://raw.githubusercontent.com/gregordr/ImageStore/main/docker-compose.yml```.
 
-Run ```docker-compose up```. If you want any optional modules, use ```--profile module``` to add them. Check below for a list of modules and explanations! 
 
-Example: ```docker-compose --profile search --profile face --profile import up```.
+## Dependencies
+1. Create an [Azure Account](https://portal.azure.com)
+2. Install  latest version  [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
+3. Install  latest version [Packer](https://www.packer.io/downloads)
+4. Install latest version [Terraform](https://www.terraform.io/downloads.html)
 
-Go to http://localhost:3000. You can edit the used port in the dockerfile.
-
-You can update to the newest version with ```docker-compose pull```. Again, use ```--profile module``` if you also want to update a module. 
-
-Last, if you want to run the dev-branch, do ```TAG=:test docker-compose up```.
-
-### Docker build images yourself
-
-Requirements:
- - Docker
- - Docker-compose
- - For automatic labeling: x86_64 CPU (also known as x64, x86_64, AMD64 and Intel 64)
-
-If you want to build yourself, then clone this repo and run ```docker-compose -f docker-compose-build.yml up```. Again, you can use ```--profile``` to add features.
-
-### Without docker
-Requires Ubuntu 18.04/20.04.
-
-```
-git clone https://github.com/gregordr/ImageStore
-cd CLI-Install
-sudo ./imagestore-build.sh
-```
-This will install and configure everything as needed in order to host ImageStore. PostgreSQL 11, Nodejs and nginx will be installed.
-By default it hosts over port 8080. If it is already in use, it will ask for an alternate port. The created database user is seeded with a random 16 character string, so there is no default password to worry about. 
-
-The Imagestore service by default will start on boot. To stop Imagestore, run
-```sudo systemctl stop ImageStoreFRONT.service; sudo systemctl stop ImageStoreBACK.service;```
-
-To prevent the service from starting on boot, run 
-```sudo systemctl disable ImageStoreFRONT.service; sudo systemctl disable ImageStoreBACK.service;```
-
-### Notes for raspberry Pi:
-
-Incase you get an error with the backend saying unreachable code, you might have to run the following commands:
-
-```
-wget http://ftp.ch.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.5.1-1_armhf.deb
-sha256sum libseccomp2_2.5.1-1_armhf.deb
-# CONFIRM THAT THE OUTPUT MATCHES THE FOLLOWING LINE BEFORE YOU RUN THE LAST COMMAND:
-# 7a4d09eea20f7e17a416825ae2be06ca08b9cb5072566045c545c74192e6fcca  libseccomp2_2.5.1-1_armhf.deb
-sudo dpkg -i libseccomp2_2.5.1-1_armhf.deb
-```
-## List of modules:
-
-These are the currently avaialable modules, or add-ons. 
-- detectron: Will automatically add relevant tags on your images.
-- yolo: Same as detectron, but with less accuracy and much less processing power needed. Don't activate both at the same time or they will conflict. 
-- search: With this module you can look for pictures similar to another image, and also search for pictures by their description. This will replace the default search, which looks for the image name and relevant tags.
-- face: This modules will find faces in your pictures, and enable you to look up other pictures of a person by pressing on their face on the sidebar/infopanel.
-- import: This will create an import directory. It contains the folders "import" and "rejected". Anything placed in the first folder will be uploaded to ImageStore. On success it is deleted, on an error it is moved to the second folder.
-## Contributing:
-
-Feel free to open an issue if you want to see any new features.
-
-If you would like to implement a feature, please create a PR to the ```test``` branch.
+## Instructions
+Once you've gathered your dependencies, we'll need the following steps to deploy the scalable web server on Azure:
+1. Deploy the packer image
+2. Deploy the infrastructure with Terraform template
