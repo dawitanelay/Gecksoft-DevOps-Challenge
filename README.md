@@ -42,7 +42,6 @@ Developers then need a way of:
 1. Install  latest version [Docker](https://docs.docker.com/get-docker/)
 2. Install  latest version  [Dokcer-compose](https://docs.docker.com/compose/install/)
 3. Install  latest version [Minikube](https://minikube.sigs.k8s.io/docs/start/)
-4. Install latest version [Kubectl](https://kubernetes.io/docs/tasks/tools/) 
 5. Install latest version [Terraform](https://www.terraform.io/downloads.html) 
 
 ## Instructions
