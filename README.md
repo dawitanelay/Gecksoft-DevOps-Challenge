@@ -39,9 +39,9 @@ Developers then need a way of:
 
 
 ## Dependencies
-1. Create an [Azure Account](https://portal.azure.com)
-2. Install  latest version  [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-3. Install  latest version [Packer](https://www.packer.io/downloads)
+1. Install  latest version [Docker](https://docs.docker.com/get-docker/)
+2. Install  latest version  [Dokcer-compose](https://docs.docker.com/compose/install/)
+3. Install  latest version [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 4. Install latest version [Terraform](https://www.terraform.io/downloads.html)
 
 ## Instructions
